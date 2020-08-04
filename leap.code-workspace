@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "dna/course/zomes/courses/code"
+		},
+		{
+			"path": "dna/course/test"
+		},
+	],
+	"extensions": {
+   		 "recommendations": [
+			"wk-j.save-and-run",
+			"matklad.rust-analyzer",
+	    ]
+  	},
+	"settings": {
+		"saveAndRun": {
+			"commands": [
+			  {
+				"match": ".rs$",
+				"cmd": "rustfmt ${file}",
+				"useShortcut": false,
+				"silent": true
+			  },
+			]
+		  }
+	},
+
+	
+}

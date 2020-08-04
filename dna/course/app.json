@@ -1,0 +1,14 @@
+{
+  "name": "Learning pathways",
+  "description": "A peer-to-peer learning application built on Holochain",
+  "authors": [
+    {
+      "identifier": "Author Name <author@name.com>",
+      "public_key_source": "",
+      "signature": ""
+    }
+  ],
+  "version": "0.1.0",
+  "dht": {},
+  "properties": null
+}
