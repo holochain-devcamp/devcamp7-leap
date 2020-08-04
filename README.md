@@ -4,6 +4,8 @@ Leap (Learning Pathways) is a peer-to-peer Udemy inspired learning application b
 
 This particular version of leap is built for the community-ran Holochain DevCamp 7.
 
+See [Homework](./HOMEWORK.md) for guidelines related to DevCamp homework assignments.
+
 ## Development
 
 ### IDE / editor
