@@ -60,6 +60,16 @@ This will just build a Rust project using Rust toolchain.
 1. go to a zome directory `dna/course/zomes/courses/code`
 2. run `cargo build`
 
+## User stories
+
+* A user should be able to view 3 tabs: enrolled courses, my courses and all courses
+* In enrolled courses, a user should be able to see all the courses in which the user is enrolled
+* In my courses, a user should be able to see all the courses in which the user is the teacher, with a "Create course" button and a "Delete course" button, and an Edit button inlined
+* In all courses, a user should be able to see all courses with an "Enrol" button if the user is not its teacher
+* The teacher for a course should be able to create/edit/delete a section in the course from each course view inside "My courses" tab
+* The teacher for a course should be able to create/edit/delete contents for each section from the section's view inside "My courses" tab
+* The teacher for a course should be able to see all the students for that course
+
 ## Architecture
 
 ![Architecture](./pictures/leap_architecture.png)
@@ -68,6 +78,4 @@ This will just build a Rust project using Rust toolchain.
 ## Data model
 
 ![Data model](./pictures/leap_data_model.png)
-
-
 
