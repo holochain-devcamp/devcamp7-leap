@@ -24,6 +24,18 @@ To open the workspace file, you can use two ways:
 1. open Microsoft Visual Studio Code separately and then go to File > Open Workspace and select the `leap.code-workspace` file in the root of this repo. This would run Visual Studio outside of Holochain shell and it will be loading system level Rust tools
 2. start Holochain shell in the root of this repository and inside it run `code .`. This will run Visual Studio inside the Holochain shell and it will be loading Rust tools provided by it.
 
+#### working with rust-analyzer VSC extension
+
+This is applicable for users of Microsoft Visual Studio Code.
+There's a great extenstion [rust-analyzer](https://rust-analyzer.github.io/) that simplifies working with code in many different ways. However, there's a catch when using it for a Holochain app: it won't work at first until you build a Rust project directly for each zome:
+
+1. open the project using the workspace file
+2. open a VSC terminal in the `code/` directory (Terminal > New Terminal)
+3. start a Holochain shell there
+4. do `cargo build`
+
+You only need to do it once for a project given that you won't be deleting the build files.
+
 ### Building
 
 All code building needs to be done in a Holochain shell which you can start by running:
