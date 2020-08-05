@@ -8,7 +8,7 @@ Every session's code would be published in a separate branch in this repository 
 
 ## How to find assignments
 
-All homework assignments would be marked by a commentary `//TODO:` so you can search the code for these. This would make it easier for you to find a starting point for writing the homework code.
+All homework assignments would be marked by a commentary `// TODO:` so you can search the code for these. This would make it easier for you to find a starting point for writing the homework code.
 
 ## How to submit
 
