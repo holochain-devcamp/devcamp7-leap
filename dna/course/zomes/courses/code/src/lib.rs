@@ -1,55 +1,62 @@
+// allowing for this Rust project to have dead code on a crate level
+#![allow(dead_code)]
+// unstable Rust feature
+// See more at: https://doc.rust-lang.org/nightly/unstable-book/language-features/proc-macro-hygiene.html
 #![feature(proc_macro_hygiene)]
+// This isn't a mistake that there are multiple #[macro_use] below: each applies to a particular crate that follows it
+// specifying that we want to import macros defined in this crate too.
+// See more at: https://doc.rust-lang.org/reference/macros-by-example.html
+#[macro_use]
+extern crate hdk;
+extern crate hdk_proc_macros;
+extern crate serde;
+#[macro_use]
+extern crate serde_derive;
+extern crate serde_json;
+#[macro_use]
+extern crate holochain_json_derive;
 
 use hdk::prelude::*;
+
 use hdk_proc_macros::zome;
 
-// see https://developer.holochain.org/api/0.0.50-alpha4/hdk/ for info on using the hdk library
-
-// This is a sample zome that defines an entry type "MyEntry" that can be committed to the
-// agent's chain via the exposed function create_my_entry
-
-#[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
-pub struct MyEntry {
-    content: String,
-}
+mod anchor_trait;
+mod course;
 
 #[zome]
-mod my_zome {
+mod courses {
 
+    // Things to be done on an hApp init, we skip this for now
     #[init]
     fn init() {
         Ok(())
     }
 
+    // Things to be done to validate each agent in the network, we skip this for now
     #[validate_agent]
     pub fn validate_agent(validation_data: EntryValidationData<AgentId>) {
         Ok(())
     }
 
+    //  ====================== Course definitions
     #[entry_def]
-    fn my_entry_def() -> ValidatingEntryType {
-        entry!(
-            name: "my_entry",
-            description: "this is a same entry defintion",
-            sharing: Sharing::Public,
-            validation_package: || {
-                hdk::ValidationPackageDefinition::Entry
-            },
-            validation: | _validation_data: hdk::EntryValidationData<MyEntry>| {
-                Ok(())
-            }
-        )
+    fn course_catalog_anchor_entry_definition() -> ValidatingEntryType {
+        course::catalog_anchor::catalog_anchor_entry_def()
     }
 
-    #[zome_fn("hc_public")]
-    fn create_my_entry(entry: MyEntry) -> ZomeApiResult<Address> {
-        let entry = Entry::App("my_entry".into(), entry.into());
-        let address = hdk::commit_entry(&entry)?;
-        Ok(address)
+    #[entry_def]
+    fn course_anchor_definition() -> ValidatingEntryType {
+        course::anchor::course_anchor_def()
     }
 
-    #[zome_fn("hc_public")]
-    fn get_my_entry(address: Address) -> ZomeApiResult<Option<Entry>> {
-        hdk::get_entry(&address)
+    #[entry_def]
+    fn course_entry_definition() -> ValidatingEntryType {
+        course::entry::course_entry_def()
     }
+
+    // Section
+    // TODO: implement section entry definitions
+
+    // Content
+    // TODO: implement content entry definition
 }
