@@ -40,15 +40,15 @@ You only need to do it once for a project given that you won't be deleting the b
 
 ### Building
 
-All code building needs to be done in a Holochain shell which you can start by running the following command in this repository root:
+All code building needs to be done in a Holochain shell which you can start by running _from the root of this repo_:
 
 ```
 nix-shell
 ```
 
-**NOTE**: it is important to run `nix-shell` specifically from this repository root because it contains `config.nix` file that defines a fixed environment version. Using `holochain.love` shell would most likely lead to a version mismatch and potential errors.
+Running this command from the root of this repo ensures that configuration from `default.nix` and `config.nix` would be picked up and you will have a shell with all necessary dependencies.
 
-If you don't have nix-shell installed, please refer to the [official doc](https://developer.holochain.org/docs/install/).
+If you don't have it installed, please refer to the [official doc](https://developer.holochain.org/docs/install/).
 
 #### Package the entire DNA
 
