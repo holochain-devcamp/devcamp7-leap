@@ -40,11 +40,13 @@ You only need to do it once for a project given that you won't be deleting the b
 
 ### Building
 
-All code building needs to be done in a Holochain shell which you can start by running:
+All code building needs to be done in a Holochain shell which you can start by running _from the root of this repo_:
 
 ```
-nix-shell https://holochain.love
+nix-shell
 ```
+
+Running this command from the root of this repo ensures that configuration from `default.nix` and `config.nix` would be picked up and you will have a shell with all necessary dependencies.
 
 If you don't have it installed, please refer to the [official doc](https://developer.holochain.org/docs/install/).
 
