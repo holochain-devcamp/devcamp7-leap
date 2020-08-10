@@ -22,6 +22,7 @@ use hdk_proc_macros::zome;
 
 mod anchor_trait;
 mod course;
+mod helper;
 
 #[zome]
 mod courses {
@@ -54,9 +55,58 @@ mod courses {
         course::entry::course_entry_def()
     }
 
+    #[zome_fn("hc_public")]
+    fn create_course(title: String, timestamp: u64) -> ZomeApiResult<Address> {
+        course::handlers::create(title, timestamp)
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_latest_course_entry(
+        course_anchor_address: Address,
+    ) -> ZomeApiResult<Option<course::entry::Course>> {
+        let latest_course_result = course::handlers::get_latest_course(&course_anchor_address)?;
+        match latest_course_result {
+            Some((course_entry, _course_entry_address)) => {
+                return Ok(Some(course_entry));
+            }
+            None => return Ok(None),
+        }
+    }
+
+    #[zome_fn("hc_public")]
+    fn update_course(
+        title: String,
+        sections_addresses: Vec<Address>,
+        course_anchor_address: Address,
+    ) -> ZomeApiResult<Address> {
+        course::handlers::update(title, sections_addresses, &course_anchor_address)
+    }
+
+    #[zome_fn("hc_public")]
+    fn delete_course(course_anchor_address: Address) -> ZomeApiResult<Address> {
+        course::handlers::delete(course_anchor_address)
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_all_courses() -> ZomeApiResult<Vec<Address>> {
+        course::handlers::list_all_courses()
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_my_courses() -> ZomeApiResult<Vec<Address>> {
+        course::handlers::get_my_courses()
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_my_enrolled_courses() -> ZomeApiResult<Vec<Address>> {
+        course::handlers::get_my_enrolled_courses()
+    }
+
     // Section
     // TODO: implement section entry definitions
+    // TODO: implement section CRUD methods
 
     // Content
     // TODO: implement content entry definition
+    // TODO: implement content CRUD methods
 }

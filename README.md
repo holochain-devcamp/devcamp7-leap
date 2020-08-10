@@ -34,7 +34,7 @@ There's a great extension [rust-analyzer](https://rust-analyzer.github.io/) that
 
 ### Building
 
-All code building needs to be done in a Holochain shell which you can start by running the following command in this repository root:
+All code building needs to be done in a Holochain shell which you can start by running _from the root of this repo_:
 
 ```
 nix-shell
@@ -42,7 +42,7 @@ nix-shell
 
 **NOTE**: it is important to run `nix-shell` specifically from this repository root because it contains `config.nix` and `default.nix` files that define a fixed environment version. Using `holochain.love` shell would most likely lead to a version mismatch and potential errors.
 
-If you don't have nix-shell installed, please refer to the [official doc](https://developer.holochain.org/docs/install/).
+If you don't have it installed, please refer to the [official doc](https://developer.holochain.org/docs/install/).
 
 #### Package the entire DNA
 
