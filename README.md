@@ -29,14 +29,8 @@ To open the workspace file, you can use two ways:
 #### working with rust-analyzer VSC extension
 
 This is applicable for users of Microsoft Visual Studio Code.
-There's a great extenstion [rust-analyzer](https://rust-analyzer.github.io/) that simplifies working with code in many different ways. However, there's a catch when using it for a Holochain app: it won't work at first until you build a Rust project directly for each zome:
-
-1. open the project using the workspace file
-2. open a VSC terminal in the `code/` directory (Terminal > New Terminal)
-3. start a Holochain shell there
-4. do `cargo build`
-
-You only need to do it once for a project given that you won't be deleting the build files.
+There's a great extension [rust-analyzer](https://rust-analyzer.github.io/) that simplifies working with the code in many different ways. It requires build files to be present to work properly so we suggest to run `cargo build` in the `dna/course/zomes/courses/code/` directory to obtain them.
+**NOTE**: if you're running on MacOS this command wouldn't succeed with a linker error due to reasons that we can't explain in detail here. Don't worry about it though because you would still able to build & package your application by running `hc package` from the `dna/course` directory.
 
 ### Building
 
@@ -46,7 +40,7 @@ All code building needs to be done in a Holochain shell which you can start by r
 nix-shell
 ```
 
-**NOTE**: it is important to run `nix-shell` specifically from this repository root because it contains `config.nix` file that defines a fixed environment version. Using `holochain.love` shell would most likely lead to a version mismatch and potential errors.
+**NOTE**: it is important to run `nix-shell` specifically from this repository root because it contains `config.nix` and `default.nix` files that define a fixed environment version. Using `holochain.love` shell would most likely lead to a version mismatch and potential errors.
 
 If you don't have nix-shell installed, please refer to the [official doc](https://developer.holochain.org/docs/install/).
 
@@ -63,6 +57,8 @@ This will just build a Rust project using Rust toolchain.
 
 1. go to a zome directory `dna/course/zomes/courses/code`
 2. run `cargo build`
+
+**NOTE**: this command would fail with a linker error when running on MacOS. This is a known and expected issue and it just means you should be building using `hc package` command.
 
 ## User stories
 
