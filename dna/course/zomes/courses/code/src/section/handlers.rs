@@ -117,7 +117,10 @@ pub fn delete(section_anchor_address: Address) -> ZomeApiResult<Address> {
     //  to change course_address in a section entry.
     // By doing so, we avoid necessity to query links of the section_anchor to retrieve the latest section entry
     // which makes this method a little bit faster
-    course::handlers::delete_section(&section_anchor.course_address, &section_anchor_address)?;
+    course::handlers::delete_section(
+        &section_anchor.course_anchor_address,
+        &section_anchor_address,
+    )?;
 
     // NOTE: let's try only deleting an anchor! (and don't touch links from anchor to section entry and section entry itself)
     // reasons:

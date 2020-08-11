@@ -81,6 +81,7 @@ pub fn get_latest_course_entry(course_anchor_address: Address) -> ZomeApiResult<
     let latest_course_result = get_latest_course(&course_anchor_address)?;
     match latest_course_result {
         Some((course_entry, _course_entry_address)) => {
+            // TODO: here we'll need to insert vec of course section addresses into the return value
             return Ok(Some(course_entry));
         }
         None => return Ok(None),
@@ -255,7 +256,7 @@ pub fn add_section(
         section_anchor_address,
         COURSE_ANCHOR_TO_SECTION_ANCHOR_LINK,
         "",
-    );
+    )?;
 
     Ok(course_anchor_address.clone())
 }
@@ -278,4 +279,19 @@ pub fn delete_section(
     )?;
 
     Ok(course_anchor_address.clone())
+}
+
+// NOTE: either make this function public so UI calls it separately or include it's return value into the course retrieval function
+// such as get_latest_course
+fn get_course_sections(course_anchor_address: &Address) -> ZomeApiResult<Vec<Address>> {
+    // retrieve course anchor to validate that it exists. We won't need the actual value so prefix it with _
+    let _course_anchor: CourseAnchor = hdk::utils::get_as_type(course_anchor_address.clone())?;
+
+    let links = hdk::get_links(
+        course_anchor_address,
+        LinkMatch::Exactly(COURSE_ANCHOR_TO_SECTION_ANCHOR_LINK),
+        LinkMatch::Any,
+    )?;
+
+    Ok(links.addresses())
 }
