@@ -17,9 +17,9 @@ extern crate serde_json;
 extern crate holochain_json_derive;
 
 use hdk::prelude::*;
-
 use hdk_proc_macros::zome;
 
+// Declaring Rust modules that are used in our project
 mod anchor_trait;
 mod course;
 mod helper;
@@ -55,6 +55,8 @@ mod courses {
         course::entry::course_entry_def()
     }
 
+    // zome_fn is used to specify that this is a function available to call from our zome
+    // "hc_public" here means that there are no restrictions as to who can call this function
     #[zome_fn("hc_public")]
     fn create_course(title: String, timestamp: u64) -> ZomeApiResult<Address> {
         course::handlers::create(title, timestamp)
@@ -64,13 +66,7 @@ mod courses {
     fn get_latest_course_entry(
         course_anchor_address: Address,
     ) -> ZomeApiResult<Option<course::entry::Course>> {
-        let latest_course_result = course::handlers::get_latest_course(&course_anchor_address)?;
-        match latest_course_result {
-            Some((course_entry, _course_entry_address)) => {
-                return Ok(Some(course_entry));
-            }
-            None => return Ok(None),
-        }
+        course::handlers::get_latest_course_entry(course_anchor_address)
     }
 
     #[zome_fn("hc_public")]
@@ -105,7 +101,6 @@ mod courses {
     // Section
     // TODO: implement section entry definitions
     // TODO: implement section CRUD methods
-
     // Content
     // TODO: implement content entry definition
     // TODO: implement content CRUD methods

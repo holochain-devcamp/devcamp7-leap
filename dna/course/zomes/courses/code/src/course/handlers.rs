@@ -67,10 +67,24 @@ pub fn create(title: String, timestamp: u64) -> ZomeApiResult<Address> {
     Ok(course_anchor_address)
 }
 
+// wrapper for a generic helper::get_latest_data_entry that instantiates it
+// specifically for the Course datatype
 pub fn get_latest_course(
     course_anchor_address: &Address,
 ) -> ZomeApiResult<Option<(Course, Address)>> {
     helper::get_latest_data_entry::<Course>(course_anchor_address, &CourseAnchor::link_type())
+}
+
+// wrapper for the get_latest_course that only returns Course entry
+// and disregards it's address
+pub fn get_latest_course_entry(course_anchor_address: Address) -> ZomeApiResult<Option<Course>> {
+    let latest_course_result = get_latest_course(&course_anchor_address)?;
+    match latest_course_result {
+        Some((course_entry, _course_entry_address)) => {
+            return Ok(Some(course_entry));
+        }
+        None => return Ok(None),
+    }
 }
 
 // NOTE: this function isn't public because it's only needed in the current module
