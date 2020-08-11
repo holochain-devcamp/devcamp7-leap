@@ -1,3 +1,5 @@
+// allowing unstable feature to remove item from the vector on a crate level
+#![feature(vec_remove_item)]
 // allowing for this Rust project to have dead code on a crate level
 #![allow(dead_code)]
 // unstable Rust feature

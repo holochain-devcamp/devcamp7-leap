@@ -247,3 +247,57 @@ pub fn enrol_in_course(course_anchor_address: Address) -> ZomeApiResult<Address>
         "",
     )
 }
+
+pub fn add_section(
+    course_anchor_address: &Address,
+    section_anchor_address: &Address,
+) -> ZomeApiResult<Address> {
+    let latest_course_result = get_latest_course(course_anchor_address)?;
+    match latest_course_result {
+        Some((mut previous_course, previous_course_address)) => {
+            previous_course
+                .sections
+                .push(section_anchor_address.clone());
+            // we won't use this new address but we need to save method's result somewhere
+            // so this variable is prefixed with _
+            let _new_course_address = commit_update(
+                previous_course,
+                &previous_course_address,
+                course_anchor_address,
+            )?;
+
+            Ok(course_anchor_address.clone())
+        }
+        None => {
+            return Err(ZomeApiError::from(
+                "Can't add section to a deleted course".to_owned(),
+            ));
+        }
+    }
+}
+
+pub fn delete_section(
+    course_anchor_address: &Address,
+    section_anchor_address: &Address,
+) -> ZomeApiResult<Address> {
+    let latest_course_result = get_latest_course(course_anchor_address)?;
+    match latest_course_result {
+        Some((mut previous_course, previous_course_address)) => {
+            previous_course.sections.remove_item(section_anchor_address);
+            // we won't use this new address but we need to save method's result somewhere
+            // so this variable is prefixed with _
+            let _new_course_address = commit_update(
+                previous_course,
+                &previous_course_address,
+                course_anchor_address,
+            )?;
+
+            Ok(course_anchor_address.clone())
+        }
+        None => {
+            return Err(ZomeApiError::from(
+                "Can't delete section from a deleted course".to_owned(),
+            ));
+        }
+    }
+}
