@@ -9,7 +9,6 @@ use holochain_entry_utils::HolochainEntry;
 #[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
 pub struct Course {
     pub title: String,
-    pub sections: Vec<Address>,
     pub teacher_address: Address,
     pub timestamp: u64,
     pub anchor_address: Address,
@@ -24,14 +23,12 @@ impl HolochainEntry for Course {
 impl Course {
     pub fn new(
         title: String,
-        sections: Vec<Address>,
         teacher_address: Address,
         timestamp: u64,
         anchor_address: Address,
     ) -> Self {
         Course {
             title: title,
-            sections: sections,
             teacher_address: teacher_address,
             timestamp: timestamp,
             anchor_address: anchor_address,

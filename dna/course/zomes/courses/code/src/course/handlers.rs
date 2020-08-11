@@ -7,13 +7,14 @@ use hdk::{
 use holochain_entry_utils::HolochainEntry;
 
 use super::anchor::{
-    CourseAnchor, COURSE_ANCHOR_TO_STUDENT_LINK, STUDENT_TO_COURSE_ANCHOR_LINK,
-    TEACHER_TO_COURSE_ANCHOR_LINK,
+    CourseAnchor, COURSE_ANCHOR_TO_SECTION_ANCHOR_LINK, COURSE_ANCHOR_TO_STUDENT_LINK,
+    STUDENT_TO_COURSE_ANCHOR_LINK, TEACHER_TO_COURSE_ANCHOR_LINK,
 };
 use super::catalog_anchor::CourseCatalogAnchor;
 use super::entry::Course;
 use crate::anchor_trait::AnchorTrait;
 use crate::helper;
+use crate::section::anchor::SectionAnchor;
 
 pub fn create(title: String, timestamp: u64) -> ZomeApiResult<Address> {
     // if catalog anchor already exists, this function would just return it's address without actually writing anything
@@ -31,7 +32,6 @@ pub fn create(title: String, timestamp: u64) -> ZomeApiResult<Address> {
     // create new Course entry
     let new_course = Course::new(
         title,
-        Vec::default(), // section vector is empty by default
         teacher_address.to_owned().into(),
         timestamp,
         course_anchor_address.clone(),
@@ -115,20 +115,12 @@ fn commit_update(
     Ok(course_anchor_address.to_owned())
 }
 
-pub fn update(
-    title: String,
-    // NOTE(e-nastasia): since we have separate methods for section management
-    // (add_section and delete_section) we might not need to have sections_addresses
-    // here because it leaves us with inconsistent API. This needs further discussion.
-    sections_addresses: Vec<Address>,
-    course_anchor_address: &Address,
-) -> ZomeApiResult<Address> {
+pub fn update(title: String, course_anchor_address: &Address) -> ZomeApiResult<Address> {
     let latest_course_result = get_latest_course(course_anchor_address)?;
     match latest_course_result {
         Some((mut previous_course, previous_course_address)) => {
             // update this course
             previous_course.title = title;
-            previous_course.sections = sections_addresses;
 
             commit_update(
                 previous_course,
@@ -246,4 +238,44 @@ pub fn enrol_in_course(course_anchor_address: Address) -> ZomeApiResult<Address>
         COURSE_ANCHOR_TO_STUDENT_LINK,
         "",
     )
+}
+
+pub fn add_section(
+    course_anchor_address: &Address,
+    section_anchor_address: &Address,
+) -> ZomeApiResult<Address> {
+    // retrieve course anchor to validate that it exists. We won't need the actual value so prefix it with _
+    let _course_anchor: CourseAnchor = hdk::utils::get_as_type(course_anchor_address.clone())?;
+    // retrieve section anchor to validate that it exists. We won't need the actual value so prefix it with _
+    let _section_anchor: SectionAnchor = hdk::utils::get_as_type(section_anchor_address.clone())?;
+
+    // now create an explicit link from course anchor to the section anchor
+    hdk::link_entries(
+        course_anchor_address,
+        section_anchor_address,
+        COURSE_ANCHOR_TO_SECTION_ANCHOR_LINK,
+        "",
+    );
+
+    Ok(course_anchor_address.clone())
+}
+
+pub fn delete_section(
+    course_anchor_address: &Address,
+    section_anchor_address: &Address,
+) -> ZomeApiResult<Address> {
+    // retrieve course anchor to validate that it exists. We won't need the actual value so prefix it with _
+    let _course_anchor: CourseAnchor = hdk::utils::get_as_type(course_anchor_address.clone())?;
+    // retrieve section anchor to validate that it exists. We won't need the actual value so prefix it with _
+    let _section_anchor: SectionAnchor = hdk::utils::get_as_type(section_anchor_address.clone())?;
+
+    // now remove an explicit link from course anchor to the section anchor, therefore removing the section
+    hdk::remove_link(
+        course_anchor_address,
+        section_anchor_address,
+        COURSE_ANCHOR_TO_SECTION_ANCHOR_LINK,
+        "",
+    )?;
+
+    Ok(course_anchor_address.clone())
 }

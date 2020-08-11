@@ -72,12 +72,8 @@ mod courses {
     }
 
     #[zome_fn("hc_public")]
-    fn update_course(
-        title: String,
-        sections_addresses: Vec<Address>,
-        course_anchor_address: Address,
-    ) -> ZomeApiResult<Address> {
-        course::handlers::update(title, sections_addresses, &course_anchor_address)
+    fn update_course(title: String, course_anchor_address: Address) -> ZomeApiResult<Address> {
+        course::handlers::update(title, &course_anchor_address)
     }
 
     #[zome_fn("hc_public")]

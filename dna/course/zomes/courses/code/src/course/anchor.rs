@@ -3,10 +3,12 @@ use holochain_entry_utils::HolochainEntry;
 
 use super::entry::Course;
 use crate::anchor_trait::AnchorTrait;
+use crate::section::anchor::SectionAnchor;
 
 pub const TEACHER_TO_COURSE_ANCHOR_LINK: &str = "teacher->course_anchor";
 pub const STUDENT_TO_COURSE_ANCHOR_LINK: &str = "student->course_anchor";
 pub const COURSE_ANCHOR_TO_STUDENT_LINK: &str = "course_anchor->student";
+pub const COURSE_ANCHOR_TO_SECTION_ANCHOR_LINK: &str = "course_anchor->section_anchor";
 
 #[derive(Serialize, Deserialize, Debug, self::DefaultJson, Clone)]
 pub struct CourseAnchor {
@@ -102,6 +104,16 @@ pub fn course_anchor_def() -> ValidatingEntryType {
             to!(
                 "%agent_id", // this is a special string that would automatically expand to the hdk::AGENT_ADDRESS
                 link_type: COURSE_ANCHOR_TO_STUDENT_LINK,
+                validation_package: || {
+                    hdk::ValidationPackageDefinition::Entry
+                },
+                validation: | _validation_data: hdk::LinkValidationData | {
+                    Ok(())
+                }
+            ),
+            to!(
+                SectionAnchor::entry_type(),
+                link_type: COURSE_ANCHOR_TO_SECTION_ANCHOR_LINK,
                 validation_package: || {
                     hdk::ValidationPackageDefinition::Entry
                 },
