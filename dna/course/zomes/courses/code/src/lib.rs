@@ -98,6 +98,16 @@ mod courses {
         course::handlers::get_my_enrolled_courses()
     }
 
+    #[zome_fn("hc_public")]
+    fn enrol_in_course(course_anchor_address: Address) -> ZomeApiResult<Address> {
+        course::handlers::enrol_in_course(course_anchor_address)
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_all_students(course_anchor_address: Address) -> ZomeApiResult<Vec<Address>> {
+        course::handlers::get_students(course_anchor_address)
+    }
+
     // Section
     // TODO: implement section entry definitions
     // TODO: implement section CRUD methods

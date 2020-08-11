@@ -228,3 +228,22 @@ pub fn get_students(course_anchor_address: Address) -> ZomeApiResult<Vec<Address
 
     Ok(links.addresses())
 }
+
+// NOTE: fun fact for fellow English learners: there isn't a typo because both "enrol" and "enroll" are valid!
+//  See: https://grammarist.com/spelling/enrol-enroll/ for more details
+pub fn enrol_in_course(course_anchor_address: Address) -> ZomeApiResult<Address> {
+    // create a link that would allow student to find course they've enrolled into
+    hdk::link_entries(
+        &AGENT_ADDRESS,
+        &course_anchor_address,
+        STUDENT_TO_COURSE_ANCHOR_LINK,
+        "",
+    )?;
+    // create a link that would allow course to list it's students
+    hdk::link_entries(
+        &course_anchor_address,
+        &AGENT_ADDRESS,
+        COURSE_ANCHOR_TO_STUDENT_LINK,
+        "",
+    )
+}
