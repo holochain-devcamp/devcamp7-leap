@@ -2,6 +2,7 @@ use hdk::prelude::*;
 use holochain_entry_utils::HolochainEntry;
 
 use super::entry::Course;
+use super::validation;
 use crate::anchor_trait::AnchorTrait;
 
 pub const TEACHER_TO_COURSE_ANCHOR_LINK: &str = "teacher->course_anchor";
@@ -49,14 +50,16 @@ pub fn course_anchor_def() -> ValidatingEntryType {
         },
         validation: | validation_data: hdk::EntryValidationData<CourseAnchor>| {
             match validation_data{
-                EntryValidationData::Create { .. } => {
-                    Ok(())
+                EntryValidationData::Create { entry, validation_data } => {
+                    validation::anchor_create(entry, validation_data)
                  },
+                 // NOTE: the symbol .. means that we're skipping unpacking parameters that we receive here
+                 // because we won't need them
                  EntryValidationData::Modify { .. } => {
-                    Ok(())
+                    validation::anchor_modify()
                  },
-                 EntryValidationData::Delete { .. } => {
-                    Ok(())
+                 EntryValidationData::Delete { old_entry, old_entry_header, validation_data } => {
+                    validation::anchor_delete(old_entry, old_entry_header, validation_data)
                  }
             }
         },
@@ -69,8 +72,8 @@ pub fn course_anchor_def() -> ValidatingEntryType {
                 validation_package:||{
                     hdk::ValidationPackageDefinition::Entry
                 },
-                validation:|_validation_data: hdk::LinkValidationData|{
-                   Ok(())
+                validation:|validation_data: hdk::LinkValidationData|{
+                    validation::anchor_to_course_link(validation_data)
                 }
             ),
             // link from agent that is a teacher of this course

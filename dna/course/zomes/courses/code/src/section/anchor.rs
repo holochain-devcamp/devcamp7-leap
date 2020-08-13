@@ -49,12 +49,15 @@ pub fn section_anchor_def() -> ValidatingEntryType {
         validation: | validation_data: hdk::EntryValidationData<SectionAnchor>| {
             match validation_data{
                 EntryValidationData::Create { .. } => {
+                    // TODO: implement validation
                      Ok(())
                  },
                  EntryValidationData::Modify { .. } => {
+                     // TODO: implement validation
                     Ok(())
                  },
                  EntryValidationData::Delete { .. } => {
+                     // TODO: implement validation
                     Ok(())
                  }
             }

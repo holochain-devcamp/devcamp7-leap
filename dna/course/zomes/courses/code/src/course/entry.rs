@@ -1,3 +1,4 @@
+use super::validation;
 use hdk::{
     entry_definition::ValidatingEntryType,
     holochain_core_types::{dna::entry_types::Sharing, validation::EntryValidationData},
@@ -5,6 +6,8 @@ use hdk::{
     holochain_persistence_api::cas::content::Address,
 };
 use holochain_entry_utils::HolochainEntry;
+
+pub const MAX_TITLE_LEN: usize = 50;
 
 #[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
 pub struct Course {
@@ -50,14 +53,14 @@ pub fn course_entry_def() -> ValidatingEntryType {
         },
         validation: | validation_data: hdk::EntryValidationData<Course>| {
             match validation_data {
-                EntryValidationData::Create { .. } => {
-                    Ok(())
+                EntryValidationData::Create { entry, validation_data } => {
+                    validation::create(entry, validation_data)
                 },
-                EntryValidationData::Modify { .. } => {
-                    Ok(())
+                EntryValidationData::Modify { new_entry, old_entry, old_entry_header, validation_data } => {
+                    validation::modify(new_entry, old_entry, old_entry_header, validation_data)
                 },
-                EntryValidationData::Delete { .. } => {
-                    Ok(())
+                EntryValidationData::Delete { old_entry, old_entry_header, validation_data } => {
+                    validation::delete(old_entry, old_entry_header, validation_data)
                 }
             }
         },

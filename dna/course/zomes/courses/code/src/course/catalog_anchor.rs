@@ -1,7 +1,7 @@
 use hdk::prelude::*;
 use hdk::{entry_definition::ValidatingEntryType, holochain_core_types::dna::entry_types::Sharing};
 
-use super::anchor::CourseAnchor;
+use super::{anchor::CourseAnchor, validation};
 use crate::anchor_trait::AnchorTrait;
 
 #[derive(Serialize, Deserialize, Debug, self::DefaultJson, Clone)]
@@ -40,8 +40,18 @@ pub fn catalog_anchor_entry_def() -> ValidatingEntryType {
         validation_package:||{
             hdk::ValidationPackageDefinition::Entry
         },
-        validation:|_validation_data: hdk::EntryValidationData<CourseCatalogAnchor>|{
-            Ok(())
+        validation:| validation_data: hdk::EntryValidationData<CourseCatalogAnchor> |{
+            match validation_data{
+                EntryValidationData::Create { entry, validation_data } => {
+                    validation::catalog_create(entry, validation_data)
+                },
+                EntryValidationData::Modify { .. } => {
+                    validation::catalog_modify()
+                },
+                EntryValidationData::Delete { .. } => {
+                    validation::catalog_delete()
+                }
+            }
         },
         links:[
             to!(
@@ -50,7 +60,7 @@ pub fn catalog_anchor_entry_def() -> ValidatingEntryType {
                 validation_package:||{
                     hdk::ValidationPackageDefinition::Entry
                 },
-                validation:|_validation_data: hdk::LinkValidationData|{
+                validation: | _validation_data: hdk::LinkValidationData | {
                     Ok(())
                 }
             )

@@ -46,12 +46,15 @@ pub fn section_entry_def() -> ValidatingEntryType {
         validation: | validation_data: hdk::EntryValidationData<Content>| {
             match  validation_data {
                 EntryValidationData::Create { .. } => {
+                    // TODO: implement validation
                     Ok(())
                 },
                 EntryValidationData::Modify { .. } => {
+                    // TODO: implement validation
                     Ok(())
                 },
                 EntryValidationData::Delete { .. } => {
+                    // TODO: implement validation
                     Ok(())
                 }
             }
