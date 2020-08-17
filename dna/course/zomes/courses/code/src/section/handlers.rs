@@ -42,7 +42,11 @@ pub fn create(
             )?;
 
             // add section into the course
-            course::handlers::add_section(&course_anchor_address, &section_anchor_address)?;
+            course::handlers::add_section(
+                &course_anchor_address,
+                &section_anchor_address,
+                timestamp,
+            )?;
             // SectionAnchor serves as this section's ID so we return it
             Ok(section_anchor_address)
         }
@@ -74,12 +78,17 @@ pub fn get_latest_section_entry(section_anchor_address: Address) -> ZomeApiResul
     }
 }
 
-pub fn update(title: String, section_anchor_address: &Address) -> ZomeApiResult<Address> {
+pub fn update(
+    title: String,
+    section_anchor_address: &Address,
+    timestamp: u64,
+) -> ZomeApiResult<Address> {
     let latest_section_result = get_latest_section(section_anchor_address)?;
     match latest_section_result {
         Some((mut previous_section, previous_section_address)) => {
             // update the section
             previous_section.title = title;
+            previous_section.timestamp = timestamp;
             // commit this update to the DHT.
             let new_section_address =
                 hdk::update_entry(previous_section.entry(), &previous_section_address)?;
@@ -110,7 +119,7 @@ pub fn update(title: String, section_anchor_address: &Address) -> ZomeApiResult<
     }
 }
 
-pub fn delete(section_anchor_address: Address) -> ZomeApiResult<Address> {
+pub fn delete(section_anchor_address: Address, timestamp: u64) -> ZomeApiResult<Address> {
     let section_anchor: SectionAnchor = hdk::utils::get_as_type(section_anchor_address.clone())?;
 
     // NOTE: we're using the fact that anchor contains course_address and that we don't allow
@@ -120,6 +129,7 @@ pub fn delete(section_anchor_address: Address) -> ZomeApiResult<Address> {
     course::handlers::delete_section(
         &section_anchor.course_anchor_address,
         &section_anchor_address,
+        timestamp,
     )?;
 
     // NOTE: let's try only deleting an anchor! (and don't touch links from anchor to section entry and section entry itself)
