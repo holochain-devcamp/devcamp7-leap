@@ -58,11 +58,14 @@ pub fn update(
     name: String,
     url: String,
     description: String,
+    timestamp: u64,
 ) -> ZomeApiResult<Address> {
     let mut content: Content = hdk::utils::get_as_type(content_address.clone())?;
+    // update the content
     content.description = description;
     content.name = name;
     content.url = url;
+    content.timestamp = timestamp;
     // commit updates to the content entry and get it's new address
     let updated_content_address = hdk::update_entry(content.clone().entry(), &content_address)?;
 
