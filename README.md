@@ -60,6 +60,28 @@ This will just build a Rust project using Rust toolchain.
 
 **NOTE**: this command would fail with a linker error when running on MacOS. This is a known and expected issue and it just means you should be building using `hc package` command.
 
+### Testing
+
+To run the integration tests:
+
+1. From the repository root run `nix-shell`
+2. Start sim2h server by executing: `sim2h_server`. It won't print anything and will just block your terminal -- that's ok and what is expected
+3. Open another terminal and run `nix-shell`
+4. Navigate to the `dna/course` folder
+5. Run the `hc test`
+
+#### less verbose output
+
+If you want to have less verbose output for the testing run it like `TRYORAMA_LOG_LEVEL=error hc test`. **NOTE:** when running with this option, your calls to `hdk::debug` in the backend code won't be displayed.
+
+#### skip building process
+
+If you want to skip building the hApp before the tests are ran (for example, you're sure it's already the version you want to use) run it like this: `hc test -s`
+
+#### manual API testing
+
+If you just want to quickly test some ideas and interact with your backend API, we recommend you to use the [Insomnia](https://insomnia.rest/) tool. You can import the configuration for it from the file `insomnia_learning_pathways.json` in this repository root: it already defines API calls with arguments and you don't have to do that manually. 
+
 ## User stories
 
 * A user should be able to view 3 tabs: enrolled courses, my courses and all courses
