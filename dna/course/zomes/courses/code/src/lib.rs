@@ -78,8 +78,9 @@ mod courses {
         title: String,
         sections_addresses: Vec<Address>,
         course_anchor_address: Address,
+        timestamp: u64,
     ) -> ZomeApiResult<Address> {
-        course::handlers::update(title, sections_addresses, &course_anchor_address)
+        course::handlers::update(title, sections_addresses, &course_anchor_address, timestamp)
     }
 
     #[zome_fn("hc_public")]
@@ -140,13 +141,17 @@ mod courses {
     }
 
     #[zome_fn("hc_public")]
-    fn update_section(title: String, section_anchor_address: Address) -> ZomeApiResult<Address> {
-        section::handlers::update(title, &section_anchor_address)
+    fn update_section(
+        title: String,
+        section_anchor_address: Address,
+        timestamp: u64,
+    ) -> ZomeApiResult<Address> {
+        section::handlers::update(title, &section_anchor_address, timestamp)
     }
 
     #[zome_fn("hc_public")]
-    fn delete_section(section_anchor_address: Address) -> ZomeApiResult<Address> {
-        section::handlers::delete(section_anchor_address)
+    fn delete_section(section_anchor_address: Address, timestamp: u64) -> ZomeApiResult<Address> {
+        section::handlers::delete(section_anchor_address, timestamp)
     }
 
     //  ====================== Content definitions
@@ -177,8 +182,9 @@ mod courses {
         name: String,
         url: String,
         description: String,
+        timestamp: u64,
     ) -> ZomeApiResult<Address> {
-        content::handlers::update(content_address, name, url, description)
+        content::handlers::update(content_address, name, url, description, timestamp)
     }
 
     #[zome_fn("hc_public")]
