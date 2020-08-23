@@ -157,7 +157,7 @@ mod courses {
     //  ====================== Content definitions
     #[entry_def]
     fn content_entry_definition() -> ValidatingEntryType {
-        content::entry::section_entry_def()
+        content::entry::content_entry_def()
     }
 
     #[zome_fn("hc_public")]
