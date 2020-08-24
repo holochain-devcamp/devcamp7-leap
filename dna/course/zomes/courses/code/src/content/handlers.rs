@@ -17,13 +17,14 @@ pub fn create(
 ) -> ZomeApiResult<Address> {
     let latest_section_result = section::handlers::get_latest_section(&section_anchor_address)?;
     match latest_section_result {
-        Some((_current_section, _current_section_address)) => {
+        Some((current_section, _current_section_address)) => {
             let new_content = Content::new(
                 name,
                 section_anchor_address.clone(),
                 url,
                 timestamp,
                 description,
+                current_section.teacher_address,
             );
             let new_content_address = hdk::commit_entry(&new_content.entry())?;
             hdk::link_entries(
@@ -61,7 +62,6 @@ pub fn update(
     timestamp: u64,
 ) -> ZomeApiResult<Address> {
     let mut content: Content = hdk::utils::get_as_type(content_address.clone())?;
-    // update the content
     content.description = description;
     content.name = name;
     content.url = url;

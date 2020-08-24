@@ -17,10 +17,14 @@ pub fn create(
     let latest_course_result = course::handlers::get_latest_course(course_anchor_address)?;
 
     match latest_course_result {
-        Some((_previous_course, _previous_course_address)) => {
+        Some((previous_course, _previous_course_address)) => {
             // initialize SectionAnchor instance
-            let section_anchor =
-                SectionAnchor::new(title.clone(), course_anchor_address.clone(), timestamp);
+            let section_anchor = SectionAnchor::new(
+                title.clone(),
+                course_anchor_address.clone(),
+                timestamp,
+                previous_course.teacher_address.clone(),
+            );
             // commit SectionAnchor to DHT
             let section_anchor_address = hdk::commit_entry(&section_anchor.entry())?;
 
@@ -30,6 +34,7 @@ pub fn create(
                 course_anchor_address.clone(),
                 timestamp,
                 section_anchor_address.clone(),
+                previous_course.teacher_address,
             );
             // commit Section to DHT
             let new_section_address = hdk::commit_entry(&new_section.entry())?;
@@ -41,7 +46,6 @@ pub fn create(
                 "".to_owned(),
             )?;
 
-            // add section into the course
             course::handlers::add_section(
                 &course_anchor_address,
                 &section_anchor_address,
@@ -58,16 +62,12 @@ pub fn create(
     }
 }
 
-// wrapper for a generic helper::get_latest_data_entry that instantiates it
-// specifically for the Section datatype
 pub fn get_latest_section(
     section_anchor_address: &Address,
 ) -> ZomeApiResult<Option<(Section, Address)>> {
     helper::get_latest_data_entry::<Section>(section_anchor_address, &SectionAnchor::link_type())
 }
 
-// wrapper for the get_latest_course that only returns Section entry
-// and disregards it's address
 pub fn get_latest_section_entry(section_anchor_address: Address) -> ZomeApiResult<Option<Section>> {
     let latest_section_result = get_latest_section(&section_anchor_address)?;
     match latest_section_result {
@@ -127,7 +127,7 @@ pub fn delete(section_anchor_address: Address, timestamp: u64) -> ZomeApiResult<
     // By doing so, we avoid necessity to query links of the section_anchor to retrieve the latest section entry
     // which makes this method a little bit faster
     course::handlers::delete_section(
-        &section_anchor.course_anchor_address,
+        &section_anchor.course_address,
         &section_anchor_address,
         timestamp,
     )?;

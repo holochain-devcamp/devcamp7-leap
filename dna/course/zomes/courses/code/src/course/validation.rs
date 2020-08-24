@@ -30,15 +30,11 @@ pub fn modify(
         "modify their courses",
     )?;
     helper::validate_entity_title(&new_entry.title, &Course::entry_type(), MAX_TITLE_LEN)?;
-    validate_no_teacher_change(old_entry, new_entry)
-}
-
-// this fn is only needed in the current module so it's private
-fn validate_no_teacher_change(old_entry: Course, new_entry: Course) -> Result<(), String> {
-    if new_entry.teacher_address != old_entry.teacher_address {
-        return Err(String::from("Cannot change the teacher of the course"));
-    }
-    Ok(())
+    helper::validate_no_teacher_change(
+        old_entry.teacher_address,
+        new_entry.teacher_address,
+        &Course::entry_type(),
+    )
 }
 
 pub fn delete(
