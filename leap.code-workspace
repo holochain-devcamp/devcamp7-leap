@@ -6,6 +6,9 @@
 		{
 			"path": "dna/course/test"
 		},
+		{
+			"path": "ui"
+		}
 	],
 	"extensions": {
    		 "recommendations": [
