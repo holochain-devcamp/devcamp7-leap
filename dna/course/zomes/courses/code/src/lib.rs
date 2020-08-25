@@ -43,6 +43,16 @@ mod courses {
         Ok(())
     }
 
+    #[zome_fn("hc_public")]
+    fn get_my_address() -> ZomeApiResult<Address> {
+        Ok(hdk::AGENT_ADDRESS.clone())
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_entry(address: Address) -> ZomeApiResult<Option<Entry>> {
+        hdk::get_entry(&address)
+    }
+
     //  ====================== Course definitions
     #[entry_def]
     fn course_catalog_anchor_entry_definition() -> ValidatingEntryType {
