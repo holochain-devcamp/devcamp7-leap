@@ -42,17 +42,16 @@ export const typeDefs = gql`
     updateCourse(courseId: ID!, title: String!, sectionsIds: [ID!]!): Course!
       @loadEntry(entryType: "course")
     deleteCourse(courseId: ID!): Query
+    createSection(courseId: ID!, title: String!): Course! @loadEntry(entryType: "course")
+    updateSection(courseId: ID!, sectionId: ID!, title: String!): Course!
+      @loadEntry(entryType: "course")
+    deleteSection(courseId: ID!, sectionId: ID!): Course! @loadEntry(entryType: "course")
+    createContent(courseId: ID!, sectionId: ID!, content: ContentInput!): Course! @loadEntry(entryType: "course")
+    updateContent(courseId: ID!, contentId: ID!, content: ContentInput!): Course! @loadEntry(entryType: "course")
+    deleteContent(courseId: ID!, contentId: ID!): Course! @loadEntry(entryType: "course")
     enrolInCourse(courseId: ID!): Course! @loadEntry(entryType: "course")
   }
 `;
 
 /*
-Once you are done with the homework, add the following inside the type Mutation
-createSection(courseId: ID!, title: String!): Course! @loadEntry(entryType: "course")
-updateSection(courseId: ID!, sectionId: ID!, title: String!): Course!
-  @loadEntry(entryType: "course")
-deleteSection(courseId: ID!, sectionId: ID!): Course! @loadEntry(entryType: "course")
-createContent(courseId: ID!, sectionId: ID!, content: ContentInput!): Course! @loadEntry(entryType: "course")
-updateContent(courseId: ID!, contentId: ID!, content: ContentInput!): Course! @loadEntry(entryType: "course")
-deleteContent(courseId: ID!, contentId: ID!): Course! @loadEntry(entryType: "course")
  */
