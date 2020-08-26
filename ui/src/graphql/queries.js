@@ -55,63 +55,147 @@ export const DELETE_COURSE = gql`
     }
   }
 `;
-// HOMEWORK
-// export const DELETE_SECTION = gql`
-//   mutation DeleteSection($courseId: ID!, $sectionId: ID!) {
 
-//   }
-// `;
+export const DELETE_SECTION = gql`
+  mutation DeleteSection($courseId: ID!, $sectionId: ID!) {
+    deleteSection(courseId: $courseId, sectionId: $sectionId) {
+      id
+      title
+      students
+      teacher_address
+      sections {
+        id
+        title
+        contents {
+          id
+          name
+          description
+          url
+        }
+      }
+    }
+  }
+`;
 
-// HOMEWORK
-// export const DELETE_CONTENT = gql`
-//   mutation DeleteContent($courseId: ID!, $contentId: ID!) {
+export const DELETE_CONTENT = gql`
+  mutation DeleteContent($courseId: ID!, $contentId: ID!) {
+    deleteContent(courseId: $courseId, contentId: $contentId) {
+      id
+      title
+      students
+      teacher_address
+      sections {
+        id
+        title
+        contents {
+          id
+          name
+          description
+          url
+        }
+      }
+    }
+  }
+`;
 
-//   }
-// `;
+export const UPDATE_CONTENT = gql`
+  mutation UpdateContent(
+    $courseId: ID!
+    $contentId: ID
+    $content: ContentInput!
+  ) {
+    updateContent(courseId: $courseId, contentId: $contentId, content: $content) {
+      id
+      title
+      students
+      teacher_address
+      sections {
+        id
+        title
+        contents {
+          id
+          name
+          description
+          url
+        }
+      }
+    }
+  }
+`;
 
-// HOMEWORK
-// export const UPDATE_CONTENT = gql`
-//   mutation UpdateContent(
-//     $courseId: ID!
-//     $contentId: ID
-//     $content: ContentInput!
-//   ) {
+export const CREATE_SECTION = gql`
+  mutation CreateSection($courseId: ID!, $title: String!) {
+    createSection(courseId: $courseId, title: $title) {
+      id
+      title
+      students
+      teacher_address
+      sections {
+        id
+        title
+        contents {
+          id
+          name
+          description
+          url
+        }
+      }
+    }
+  }
+`;
 
-//   }
-// `;
+export const UPDATE_SECTION = gql`
+  mutation UpdateSection($courseId: ID!, $sectionId: ID!, $title: String!) {
+    updateSection(courseId: $courseId, sectionId: $sectionId, title: $title) {
+      id
+      title
+      students
+      teacher_address
+      sections {
+        id
+        title
+        contents {
+          id
+          name
+          description
+          url
+        }
+      }
+    }
+  }
+`;
 
-// HOMEWORK
-// export const CREATE_SECTION = gql`
-//   mutation CreateSection($courseId: ID!, $title: String!) {
+export const CREATE_CONTENT = gql`
+  mutation CreateContent(
+    $courseId: ID!
+    $sectionId: ID!
+    $content: ContentInput!
+  ) {
+    createContent(courseId: $courseId, sectionId: $sectionId, content: $content) {
+      id
+      title
+      students
+      teacher_address
+      sections {
+        id
+        title
+        contents {
+          id
+          name
+          description
+          url
+        }
+      }
+    }
+  }
+`;
 
-//   }
-// `;
-
-// HOMEWORK
-// export const UPDATE_SECTION = gql`
-//   mutation UpdateSection($courseId: ID!, $sectionId: ID!, $title: String!) {
-
-//   }
-// `;
-
-// HOMEWORK
-// export const CREATE_CONTENT = gql`
-//   mutation CreateContent(
-//     $courseId: ID!
-//     $sectionId: ID!
-//     $content: ContentInput!
-//   ) {
-
-//   }
-// `;
-
-// HOMEWORK
-// export const ENROL_IN_COURSE = gql`
-//   mutation EnrolInCourse($courseId: ID!) {
-//     enrolInCourse(courseId: $courseId) {
-//       id
-//       title
-//       students
-//     }
-//   }
-// `;
+export const ENROL_IN_COURSE = gql`
+  mutation EnrolInCourse($courseId: ID!) {
+    enrolInCourse(courseId: $courseId) {
+      id
+      title
+      students
+    }
+  }
+`;

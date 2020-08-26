@@ -89,30 +89,97 @@ export const resolvers = {
 
       return parseResponse(result);
     },
-    // HOMEWORK
-    // async createSection(_, { courseId, title }, { callZome }) {
+    async createSection(_, { courseId, title }, { callZome }) {
+      const result = await callZome(
+        INSTANCE_NAME,
+        ZOME_NAME,
+        'create_section'
+      )({
+        timestamp: getTimestamp(),
+        course_anchor_address: courseId,
+        title
+      });
 
-    // },
-    // HOMEWORK
-    // async updateSection(_, { courseId, sectionId, title }, { callZome }) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve(courseId), 300);
+      });
+    },
+    async updateSection(_, { courseId, sectionId, title }, { callZome }) {
+      const result = await callZome(
+        INSTANCE_NAME,
+        ZOME_NAME,
+        'update_section'
+      )({
+        section_anchor_address: sectionId,
+        title,
+        timestamp: getTimestamp(),
+      });
 
-    // },
-    // HOMEWORK
-    // async deleteSection(_, { courseId, sectionId }, { callZome }) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve(courseId), 300);
+      });
+    },
+    async deleteSection(_, { courseId, sectionId }, { callZome }) {
+      const result = await callZome(
+        INSTANCE_NAME,
+        ZOME_NAME,
+        'delete_section'
+      )({
+        section_anchor_address: sectionId,
+        timestamp: getTimestamp(),
+      });
 
-    // },
-    // HOMEWORK
-    // async createContent(_, { courseId, content, sectionId }, { callZome }) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve(courseId), 300);
+      });
+    },
+    async createContent(_, { courseId, content, sectionId }, { callZome }) {
+      const result = await callZome(
+        INSTANCE_NAME,
+        ZOME_NAME,
+        'create_content'
+      )({
+        timestamp: getTimestamp(),
+        name: content.name,
+        section_anchor_address: sectionId,
+        url: content.url,
+        description: content.description
+      });
 
-    // },
-    // HOMEWORK
-    // async updateContent(_, { courseId, content, contentId }, { callZome }) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve(courseId), 300);
+      });
+    },
+    async updateContent(_, { courseId, content, contentId }, { callZome }) {
+      const result = await callZome(
+        INSTANCE_NAME,
+        ZOME_NAME,
+        'update_content'
+      )({
+        name: content.name,
+        content_address: contentId,
+        url: content.url,
+        description: content.description,
+        timestamp: getTimestamp()
+      });
 
-    // },
-    // HOMEWORK
-    // async deleteContent(_, { courseId, contentId }, { callZome }) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve(courseId), 300);
+      });
+    },
+    async deleteContent(_, { courseId, contentId }, { callZome }) {
+      const result = await callZome(
+        INSTANCE_NAME,
+        ZOME_NAME,
+        'delete_content'
+      )({
+        content_address: contentId
+      });
 
-    // },
+      return new Promise(resolve => {
+        setTimeout(() => resolve(courseId), 300);
+      });
+    },
     async enrolInCourse(_, { courseId }, { callZome }) {
       const result = await callZome(
         INSTANCE_NAME,
